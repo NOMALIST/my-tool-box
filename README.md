@@ -17,7 +17,15 @@
 npm install
 npm run dev        # 개발 모드
 npm run build:win  # 설치 파일 빌드
+npm run shortcut   # 바탕화면·시작 메뉴 바로가기 생성 (최초 1회)
 ```
+
+## 바로가기 실행
+- 바로가기 → `scripts/launch.vbs` → 터미널 창 없이 `npm run start` (최신 소스 빌드 후 실행)
+- 코드 수정 후 별도 빌드 불필요, 다시 실행하면 반영
+- 실행 안 될 때: 프로젝트 루트 `launch.log` 확인
+- 프로젝트 폴더 이동 시 `npm run shortcut` 재실행
+- `launch.vbs`는 UTF-16 LE(BOM) 유지 필수 — UTF-8 저장 시 한글 주석이 다음 줄을 삼켜 실행 안 됨
 
 ## 데이터 위치
 - `%APPDATA%\Alfred\alfred-data.json`
