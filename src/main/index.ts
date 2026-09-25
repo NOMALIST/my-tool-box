@@ -18,7 +18,8 @@ function createWindow(): void {
     autoHideMenuBar: true,
     title: 'Alfred',
     backgroundColor: '#f6f1e9',
-    ...(process.platform === 'linux' ? { icon } : {}),
+    // macOS는 번들 아이콘(icns) 사용, 그 외 플랫폼은 창 아이콘 직접 지정 (dev 실행 포함)
+    ...(process.platform !== 'darwin' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f7cd5d"/>
+      <stop offset="1" stop-color="#e58f35"/>
+    </linearGradient>
+    <linearGradient id="towel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e3e9f0"/>
+    </linearGradient>
+    <clipPath id="frame">
+      <rect x="40" y="40" width="944" height="944" rx="210"/>
+    </clipPath>
+  </defs>
+
+  <!-- 배경 -->
+  <rect x="40" y="40" width="944" height="944" rx="210" fill="url(#bg)"/>
+
+  <g clip-path="url(#frame)">
+    <!-- 목 -->
+    <rect x="466" y="470" width="92" height="90" rx="20" fill="#e3b287"/>
+
+    <!-- 턱시도 재킷 -->
+    <path d="M212,1024 L212,740 C212,620 318,552 438,540 L512,720 L586,540 C706,552 812,620 812,740 L812,1024 Z" fill="#1d1f24"/>
+    <!-- 셔츠 -->
+    <path d="M438,540 L512,720 L586,540 Z" fill="#ffffff"/>
+    <!-- 라펠 -->
+    <path d="M438,540 L512,720 L452,640 L400,560 Z" fill="#2c2f36"/>
+    <path d="M586,540 L512,720 L572,640 L624,560 Z" fill="#2c2f36"/>
+    <!-- 셔츠 단추 -->
+    <circle cx="512" cy="628" r="9" fill="#1d1f24"/>
+    <circle cx="512" cy="668" r="9" fill="#1d1f24"/>
+    <!-- 나비넥타이 -->
+    <path d="M512,566 L446,534 Q436,566 446,598 Z" fill="#c0392b"/>
+    <path d="M512,566 L578,534 Q588,566 578,598 Z" fill="#c0392b"/>
+    <rect x="496" y="550" width="32" height="32" rx="8" fill="#962d22"/>
+
+    <!-- 팔 (소매) -->
+    <path d="M330,770 L640,778 C660,781 672,796 672,814 L672,830 C672,848 658,862 640,862 L330,862 Z" fill="#2a2d33"/>
+    <!-- 소매 커프스 -->
+    <rect x="636" y="776" width="36" height="86" rx="10" fill="#ffffff"/>
+    <!-- 손 -->
+    <circle cx="712" cy="818" r="46" fill="#f0c49b"/>
+
+    <!-- 팔에 걸친 수건 -->
+    <path d="M330,748 L590,784 C600,786 606,794 606,804 L618,968 Q592,990 566,968 Q540,990 514,968 Q488,990 462,968 Q436,990 410,968 Q384,990 358,968 Q336,986 318,966 L312,770 C312,756 320,747 330,748 Z" fill="url(#towel)"/>
+    <!-- 수건 줄무늬 -->
+    <path d="M315,900 L612,900 L614,928 L316,928 Z" fill="#3f7fbf"/>
+    <!-- 수건 접힘선 -->
+    <path d="M330,790 L596,826" stroke="#d3dbe4" stroke-width="10" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- 귀 -->
+  <circle cx="364" cy="372" r="30" fill="#e3b287"/>
+  <circle cx="660" cy="372" r="30" fill="#e3b287"/>
+  <!-- 얼굴 -->
+  <circle cx="512" cy="360" r="150" fill="#f0c49b"/>
+  <!-- 머리카락 (올백 가르마) -->
+  <path d="M362,352 C356,236 432,196 512,196 C604,196 668,240 662,350 C646,296 600,262 540,258 L520,286 L500,258 C440,262 386,292 362,352 Z" fill="#3a3d44"/>
+  <!-- 눈 -->
+  <circle cx="458" cy="364" r="13" fill="#23252b"/>
+  <circle cx="566" cy="364" r="13" fill="#23252b"/>
+  <!-- 눈썹 -->
+  <path d="M430,330 Q458,316 486,328" stroke="#3a3d44" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <path d="M538,328 Q566,316 594,330" stroke="#3a3d44" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <!-- 콧수염 -->
+  <path d="M512,420 C492,400 452,402 424,430 C452,426 482,446 512,436 C542,446 572,426 600,430 C572,402 532,400 512,420 Z" fill="#3a3d44"/>
+  <!-- 미소 -->
+  <path d="M482,462 Q512,478 542,462" stroke="#b5795a" stroke-width="8" stroke-linecap="round" fill="none"/>
+</svg>
