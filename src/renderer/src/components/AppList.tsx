@@ -35,9 +35,8 @@ function AppList({ data, update, status }: Props): React.JSX.Element {
   const pickFolder = async (): Promise<void> => {
     const folder = await window.alfred.pickFolder()
     if (!folder) return
-    // 이름이 비어 있으면 폴더명으로 자동 채움
-    const base = folder.split(/[\\/]/).pop() ?? ''
-    setForm((f) => ({ ...f, cwd: folder, name: f.name || base }))
+    // 이름이 비어 있으면 폴더명으로 자동 채움 (폴더명 = 앱 이름 통일)
+    setForm((f) => ({ ...f, cwd: folder, name: f.name || folder }))
   }
 
   const submit = (e: React.FormEvent): void => {
@@ -114,12 +113,15 @@ function AppList({ data, update, status }: Props): React.JSX.Element {
               <input
                 value={form.cwd}
                 onChange={(e) => setForm({ ...form, cwd: e.target.value })}
-                placeholder="C:\work\my-app\..."
+                placeholder="my-diary"
               />
               <button type="button" className="btn" onClick={pickFolder}>
                 찾아보기
               </button>
             </div>
+            <span className="hint">
+              my-app 폴더 안의 폴더 이름만 입력 · PC마다 경로가 달라도 동작
+            </span>
           </label>
           <label>
             실행 명령

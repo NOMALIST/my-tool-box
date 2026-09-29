@@ -3,6 +3,7 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { loadData, saveData } from './store'
+import { appsRoot, toAbsolute, toFolderName } from './paths'
 import { startApp, stopApp, stopAll, getStatus, onStatusChange } from './runner'
 import type { AlfredData, AppItem } from '../shared/types'
 
@@ -50,12 +51,25 @@ function registerIpc(): void {
   ipcMain.handle('app:status', () => getStatus())
 
   ipcMain.handle('shell:openUrl', (_, url: string) => shell.openExternal(url))
-  ipcMain.handle('shell:openFolder', (_, path: string) => shell.openPath(path))
+  ipcMain.handle('shell:openFolder', (_, path: string) => shell.openPath(toAbsolute(path)))
 
+  // 기준 폴더(my-app) 바로 아래 폴더만 등록 가능 → 폴더 이름만 반환
   ipcMain.handle('dialog:pickFolder', async () => {
     if (!mainWindow) return null
-    const result = await dialog.showOpenDialog(mainWindow, { properties: ['openDirectory'] })
-    return result.canceled ? null : result.filePaths[0]
+    const result = await dialog.showOpenDialog(mainWindow, {
+      defaultPath: appsRoot(),
+      properties: ['openDirectory']
+    })
+    if (result.canceled) return null
+    const name = toFolderName(result.filePaths[0])
+    if (!name) {
+      dialog.showMessageBox(mainWindow, {
+        type: 'warning',
+        message: '등록할 수 없는 폴더입니다.',
+        detail: `${appsRoot()} 바로 아래의 폴더만 등록할 수 있습니다.`
+      })
+    }
+    return name
   })
 
   // 프로세스 상태 변화 → 렌더러로 푸시

@@ -1,6 +1,8 @@
 import { spawn, spawnSync, type ChildProcess } from 'child_process'
 import type { AppItem, RunStatus } from '../shared/types'
+import { existsSync } from 'fs'
 import { withPort } from '../shared/ports'
+import { toAbsolute } from './paths'
 
 const processes = new Map<string, ChildProcess>()
 const errors: Record<string, string> = {}
@@ -18,9 +20,17 @@ export function startApp(item: AppItem): void {
   if (processes.has(item.id)) return
   delete errors[item.id]
 
+  // 다른 PC에서 아직 clone하지 않은 앱 → 실행 대신 안내
+  const cwd = toAbsolute(item.cwd)
+  if (!existsSync(cwd)) {
+    errors[item.id] = `폴더 없음: ${item.cwd} (clone 필요)`
+    notify(getStatus())
+    return
+  }
+
   // PORT 환경변수(Next 등) + 명령 내 {port} 치환 → 앱별 고정 포트로 실행
   const child = spawn(withPort(item.command, item.port), {
-    cwd: item.cwd,
+    cwd,
     env: { ...process.env, PORT: String(item.port) },
     shell: true,
     windowsHide: true,
