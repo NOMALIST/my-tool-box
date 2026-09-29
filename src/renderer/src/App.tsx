@@ -15,10 +15,25 @@ function greeting(): string {
 }
 
 function App(): React.JSX.Element {
-  const { data, update, status } = useAlfred()
+  const { data, update, status, error, reload } = useAlfred()
   const [tab, setTab] = useState<Tab>('apps')
 
-  if (!data) return <div className="loading">Alfred 준비 중…</div>
+  if (!data) {
+    return (
+      <div className="loading">
+        {error ? (
+          <div>
+            <p className="error-text">{error}</p>
+            <button className="btn" onClick={reload}>
+              다시 시도
+            </button>
+          </div>
+        ) : (
+          'Alfred 준비 중…'
+        )}
+      </div>
+    )
+  }
 
   const openTodos = data.todos.filter((t) => !t.done).length
   const tabs: { key: Tab; label: string; icon: string; count: number }[] = [
@@ -66,6 +81,7 @@ function App(): React.JSX.Element {
             {tab === 'todos' && '할일'}
             {tab === 'ideas' && '아이디어'}
           </h1>
+          {error && <p className="error-text">{error}</p>}
         </header>
 
         {tab === 'apps' && <AppList data={data} update={update} status={status} />}

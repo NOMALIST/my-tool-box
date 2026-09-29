@@ -22,6 +22,7 @@
 ## 실행
 ```bash
 npm install
+# my-app/.env.local 필요 (.env.example 참고, DATABASE_URL)
 npm run dev        # 개발 모드
 npm run build:win  # 설치 파일 빌드
 npm run shortcut   # 바탕화면·시작 메뉴 바로가기 생성 (최초 1회)
@@ -35,10 +36,17 @@ npm run shortcut   # 바탕화면·시작 메뉴 바로가기 생성 (최초 1�
 - `launch.vbs`는 UTF-16 LE(BOM) 유지 필수 — UTF-8 저장 시 한글 주석이 다음 줄을 삼켜 실행 안 됨
 
 ## 데이터 위치
-- `%APPDATA%\Alfred\alfred-data.json`
+- Supabase Postgres `alfred` 스키마 (앱·할일·아이디어) → 모든 PC가 같은 데이터 공유
+  - 접속 정보: `my-app/.env.local`의 `DATABASE_URL` — 모든 로컬 앱 공유 (git 미포함, PC마다 1회 복사)
+  - my-tool-box 폴더에 `.env.local`이 있으면 그 값 우선
+  - 스키마: `supabase/schema.sql` → `npm run db:schema`로 적용 (재실행 안전)
+- 항목 단위 저장 → 여러 PC에서 써도 서로 덮어쓰지 않음
+- 다른 PC의 변경은 창에 다시 들어올 때 재조회로 반영
+- DB 연결 실패 시 오류 표시 (오프라인 사용 불가)
+- 기존 로컬 파일(`%APPDATA%\Alfred\alfred-data.json`) 이전: `npm run db:migrate-json`
 
 ## 구조
-- `src/main` — 창 생성, IPC, JSON 저장소(`store.ts`), 프로세스 실행기(`runner.ts`)
+- `src/main` — 창 생성, IPC, DB 저장소(`store.ts`, `db.ts`), 폴더 경로(`paths.ts`), 프로세스 실행기(`runner.ts`)
 - `src/preload` — 렌더러에 `window.alfred` API 노출
 - `src/shared` — 메인/렌더러 공용 타입
 - `src/renderer` — React UI (베이지 테마, `assets/main.css`)

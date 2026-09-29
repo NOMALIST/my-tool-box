@@ -4,6 +4,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { loadData, saveData } from './store'
 import { appsRoot, toAbsolute, toFolderName } from './paths'
+import { logError, userMessage } from './log'
 import { startApp, stopApp, stopAll, getStatus, onStatusChange } from './runner'
 import type { AlfredData, AppItem } from '../shared/types'
 
@@ -43,8 +44,15 @@ function createWindow(): void {
 }
 
 function registerIpc(): void {
-  ipcMain.handle('data:get', () => loadData())
-  ipcMain.handle('data:save', (_, data: AlfredData) => saveData(data))
+  // DB 원문 에러(접속 정보 포함 가능)는 로그에 요약만, 렌더러에는 안전한 메시지만 전달
+  const safeDb = <T>(tag: string, task: () => Promise<T>): Promise<T> =>
+    task().catch((e) => {
+      logError(tag, e)
+      throw new Error(userMessage(e))
+    })
+
+  ipcMain.handle('data:get', () => safeDb('[data:get]', loadData))
+  ipcMain.handle('data:save', (_, data: AlfredData) => safeDb('[data:save]', () => saveData(data)))
 
   ipcMain.handle('app:start', (_, item: AppItem) => startApp(item))
   ipcMain.handle('app:stop', (_, id: string) => stopApp(id))
